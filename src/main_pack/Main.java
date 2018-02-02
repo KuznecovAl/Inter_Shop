@@ -20,7 +20,7 @@ public class Main {
             Statement stmt = connection.createStatement();
 
             int rowsAffected = stmt.executeUpdate
-                    ("update books SET GENRE='xxx' WHERE GENRE='Фентези';");
+                    ("update books SET GENRE='xxxx' WHERE GENRE='Фентези';");
 
             rs = stmt.executeQuery("SELECT * FROM books");
             while (rs.next()) {
