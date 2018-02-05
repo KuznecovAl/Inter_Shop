@@ -1,7 +1,7 @@
 package main_pack;
 
-import main_pack.services.ConnectionManager;
-import main_pack.services.DbManagerException;
+import main_pack.utils.ConnectionManager;
+import main_pack.utils.DbManagerException;
 
 import java.sql.*;
 import java.util.ArrayList;

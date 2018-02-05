@@ -2,7 +2,6 @@ package main_pack.dao.impl;
 
 import main_pack.dao.UserDao;
 import main_pack.entities.User;
-import main_pack.services.ConnectionManager;
 
 import java.io.Serializable;
 import java.sql.PreparedStatement;
@@ -12,7 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDaoImpl implements UserDao{
+public class UserDaoImpl extends AbstractDao implements UserDao{
 
     private static volatile UserDao INSTANCE = null;
 
@@ -20,7 +19,6 @@ public class UserDaoImpl implements UserDao{
     private static final String saveUserQuery = "INSERT INTO USERS (LOGIN, PASSWORD, PRIVILEGE, NAME, LNAME, E_MAIL, PHONE," +
             " ADDRESS_CITY, ADDRESS_STREET, ADDRESS_HOUSE, ADDRESS_FLAT, ADDRESS_INDEX," +
             "LANG, STATUS) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
     private static final String updateUserQuery = "UPDATE USERS SET LOGIN=?, PASSWORD=?, PRIVILEGE=?, NAME=?, LNAME=?, E_MAIL=?," +
             "PHONE=?, ADDRESS_CITY=?, ADDRESS_STREET=?, ADDRESS_HOUSE=?, ADDRESS_FLAT=?, ADDRESS_INDEX=?," +
             "LANG=?, STATUS=? WHERE USER_ID=?";
@@ -34,18 +32,7 @@ public class UserDaoImpl implements UserDao{
     private PreparedStatement psGet;
     private PreparedStatement psGetAll;
     private PreparedStatement psDelete;
-    {
-        try {
-            psSave = ConnectionManager.getConnection().prepareStatement(saveUserQuery, Statement.RETURN_GENERATED_KEYS);
-            psSaveNew = ConnectionManager.getConnection().prepareStatement(saveNewUserQuery, Statement.RETURN_GENERATED_KEYS);
-            psUpdate = ConnectionManager.getConnection().prepareStatement(updateUserQuery);
-            psGet = ConnectionManager.getConnection().prepareStatement(getUserQuery);
-            psGetAll = ConnectionManager.getConnection().prepareStatement(getAllUserQuery);
-            psDelete = ConnectionManager.getConnection().prepareStatement(deleteUserQuery);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+
 
     private UserDaoImpl() {
     }
@@ -63,7 +50,37 @@ public class UserDaoImpl implements UserDao{
         return userDao;
     }
     @Override
+    public List<User> getAll() throws SQLException {
+        List<User> list = new ArrayList<>();
+        psGetAll = prepareStatement(getAllUserQuery);
+
+        psGetAll.execute();
+        ResultSet rs = psGetAll.getResultSet();
+        while (rs.next()) {
+            User user = new User();
+            user.setId(rs.getLong(1));
+            user.setLogin(rs.getString(2));
+            user.setPassword(rs.getString(3));
+            user.setPrivilege(rs.getInt(4));
+            user.setName(rs.getString(5));
+            user.setLast_name(rs.getString(6));
+            user.setEmail(rs.getString(7));
+            user.setPhone(rs.getString(8));
+            user.setAddress_city(rs.getString(9));
+            user.setAddress_street(rs.getString(10));
+            user.setAddress_building(rs.getString(11));
+            user.setAddress_flat(rs.getString(12));
+            user.setAddress_index(rs.getString(13));
+            user.setLang(rs.getString(14));
+            user.setStatus(rs.getString(15));
+            list.add(user);
+        }
+        close(rs);
+        return list;
+    }
+    @Override
     public User saveNew(User user) throws SQLException {
+        psSaveNew = prepareStatement(saveNewUserQuery, Statement.RETURN_GENERATED_KEYS);
         psSaveNew.setString(1, user.getLogin());
         psSaveNew.setString(2, user.getPassword());
         psSaveNew.setString(3, user.getEmail());
@@ -77,6 +94,7 @@ public class UserDaoImpl implements UserDao{
     }
     @Override
     public User save(User user) throws SQLException {
+        psSave = prepareStatement(saveUserQuery, Statement.RETURN_GENERATED_KEYS);
         psSave.setString(1, user.getLogin());
         psSave.setString(2, user.getPassword());
         psSave.setInt(3, user.getPrivilege());
@@ -101,6 +119,8 @@ public class UserDaoImpl implements UserDao{
     }
     @Override
     public User get(Serializable id) throws SQLException {
+        psGet = prepareStatement(getUserQuery);
+
         psGet.setLong(1, (long)id);
         psGet.executeQuery();
         ResultSet rs = psGet.getResultSet();
@@ -130,6 +150,7 @@ public class UserDaoImpl implements UserDao{
     }
     @Override
     public void update(User user) throws SQLException {
+        psUpdate = prepareStatement(updateUserQuery);
         psUpdate.setLong(15, user.getId());
         psUpdate.setString(1, user.getLogin());
         psUpdate.setString(2, user.getPassword());
@@ -148,43 +169,11 @@ public class UserDaoImpl implements UserDao{
         psUpdate.executeUpdate();
     }
     @Override
-    public List<User> getAll() throws SQLException {
-        List<User> list = new ArrayList<>();
-        psGetAll.execute();
-        ResultSet rs = psGetAll.getResultSet();
-        while (rs.next()) {
-            User user = new User();
-            user.setId(rs.getLong(1));
-            user.setLogin(rs.getString(2));
-            user.setPassword(rs.getString(3));
-            user.setPrivilege(rs.getInt(4));
-            user.setName(rs.getString(5));
-            user.setLast_name(rs.getString(6));
-            user.setEmail(rs.getString(7));
-            user.setPhone(rs.getString(8));
-            user.setAddress_city(rs.getString(9));
-            user.setAddress_street(rs.getString(10));
-            user.setAddress_building(rs.getString(11));
-            user.setAddress_flat(rs.getString(12));
-            user.setAddress_index(rs.getString(13));
-            user.setLang(rs.getString(14));
-            user.setStatus(rs.getString(15));
-            list.add(user);
-        }
-        close(rs);
-        return list;
-    }
-    @Override
     public int delete(Serializable id) throws SQLException {
+        psDelete = prepareStatement(deleteUserQuery);
         psDelete.setLong(1, (long)id);
         return psDelete.executeUpdate();
     }
-    private static void close(ResultSet rs) {
-        try {
-            if (rs != null)
-                rs.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+
+
 }

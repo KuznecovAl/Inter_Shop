@@ -1,16 +1,16 @@
-package main_pack.services;
+package main_pack.utils;
 
 import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.util.ResourceBundle;
-
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 /**
  * Class DataSource
- *
+ * <p>
  * Created by yslabko on 08/08/2017.
  */
 public class DataSource {
@@ -40,6 +40,12 @@ public class DataSource {
     }
 
     private DataSource() throws IOException, SQLException, PropertyVetoException {
+
+        Properties p = new Properties(System.getProperties());
+        p.put("com.mchange.v2.log.MLog", "com.mchange.v2.log.FallbackMLog");
+        p.put("com.mchange.v2.log.FallbackMLog.DEFAULT_CUTOFF_LEVEL", "OFF"); // Off or any other level
+        System.setProperties(p);
+
         pooledDatasource = new ComboPooledDataSource();
         pooledDatasource.setDriverClass(DRIVER); //loads the jdbc driver
         pooledDatasource.setJdbcUrl(URL);

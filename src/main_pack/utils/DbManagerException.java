@@ -1,4 +1,4 @@
-package main_pack.services;
+package main_pack.utils;
 
 
 public class DbManagerException extends RuntimeException {

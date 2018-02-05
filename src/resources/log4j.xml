@@ -3,11 +3,31 @@
         "-//APACHE//DTD LOG4J 1.2//EN"
         "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
 <log4j:configuration debug="false">
+    <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <!-- Pattern to output the caller's file name and line number -->
+            <param name="ConversionPattern" value="%5p [%t] (%F:%L) - %m%n"/>
+        </layout>
+    </appender>
 
+    <appender name="R" class="org.apache.log4j.FileAppender">
+        <param name="file" value="logs/example.log"/>
+        <!-- Keep one backup file -->
+        <param name="MaxBackupIndex" value="1"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%p %t %c - %m%n"/>
+        </layout>
+    </appender>
     <root>
-
-        <priority value="info"/>
+        <priority value ="debug" />
+        <appender-ref ref="stdout" />
+        <appender-ref ref="R" />
     </root>
+
+    <!--<root>-->
+
+        <!--<priority value="info"/>-->
+    <!--</root>-->
 
 </log4j:configuration>
 
