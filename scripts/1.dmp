@@ -33,7 +33,7 @@ CREATE TABLE `items` (
   KEY `items_products__fk` (`ID_PRODUCTS`),
   CONSTRAINT `items_orders__fk` FOREIGN KEY (`ID_ORDERS`) REFERENCES `orders` (`ORDER_ID`),
   CONSTRAINT `items_products__fk` FOREIGN KEY (`ID_PRODUCTS`) REFERENCES `products` (`PRODUCT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,6 +42,7 @@ CREATE TABLE `items` (
 
 LOCK TABLES `items` WRITE;
 /*!40000 ALTER TABLE `items` DISABLE KEYS */;
+INSERT INTO `items` VALUES (1,1,40,2,10);
 /*!40000 ALTER TABLE `items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -60,7 +61,7 @@ CREATE TABLE `orders` (
   PRIMARY KEY (`ORDER_ID`),
   KEY `orders_users__fk` (`ID_USER`),
   CONSTRAINT `orders_users__fk` FOREIGN KEY (`ID_USER`) REFERENCES `users` (`USER_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -69,6 +70,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
+INSERT INTO `orders` VALUES (1,1008,'2018-02-07 07:35:05','open');
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -140,7 +142,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1007,'kuz','1qaz',0,'Александр','Кузнецов','7515313@gmail.com','+375297515313','Минск','Германовская','17','107','220034','RU','reg','1983-11-26'),(1008,'nad','2wsx',1,'Надежда','Кузнецова','nad1@tut.by','+375447752821','Минск','Германовская','17','107','220034','RU','reg','1981-03-07'),(1009,'ivan','3edc',2,'Иван','Иванов','ivan@vanya.ru','+375254445599','Витебск','Ленина','10','5','210054','RU','reg','2018-02-17'),(1010,'petr','4rfv',2,'Петр','Петров','petr@petya.by','+3758882598','Минск','Горовца','2','297','220028','EN','reg','1991-07-23'),(1011,'sidr','qwer',3,'Имя','Фамилия','sidr@yandex.ru','Телефон','Город','Улица','Номер дома','Номер квартиры','Индекс','RU','new','2018-01-01'),(1012,'guest',NULL,4,'Имя','Фамилия','Адрес электронной почты','Телефон','Город','Улица','Номер дома','Номер квартиры','Индекс','RU','guest','2018-01-01');
+INSERT INTO `users` VALUES (1007,'kuz','1qaz',0,'Александр','Кузнецов','7515313@gmail.com','+375297515313','Минск','Германовская','17','107','220034','RU','reg','1983-11-26'),(1008,'nad','4gWyZH2ejIyK1payn196THb2g1U=',1,'Надежда','Кузнецова','nad1@tut.by','+375447752821','Минск','Германовская','17','107','220034','RU','reg','1981-03-07'),(1009,'ivan','3edc',2,'Иван','Иванов','ivan@vanya.ru','+375254445599','Витебск','Ленина','10','5','210054','RU','reg','2018-02-17'),(1010,'petr','4rfv',2,'Петр','Петров','petr@petya.by','+3758882598','Минск','Горовца','2','297','220028','EN','reg','1991-07-23'),(1011,'sidr','qwer',3,'Имя','Фамилия','sidr@yandex.ru','Телефон','Город','Улица','Номер дома','Номер квартиры','Индекс','RU','new','2018-01-01'),(1012,'guest',NULL,4,'Имя','Фамилия','Адрес электронной почты','Телефон','Город','Улица','Номер дома','Номер квартиры','Индекс','RU','guest','2018-01-01');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -153,4 +155,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-02-07  4:53:53
+-- Dump completed on 2018-02-07  7:54:52
