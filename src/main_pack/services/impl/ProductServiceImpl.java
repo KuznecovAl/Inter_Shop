@@ -8,12 +8,39 @@ import main_pack.services.ProductService;
 
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.List;
 
-/**
- * Created by yslabko on 07/03/2017.
- */
+
 public class ProductServiceImpl extends AbstractService implements ProductService {
+
+    private static volatile ProductService INSTANCE = null;
     private ProductDao productDao = ProductDaoImpl.getInstance();
+
+    public static ProductService getInstance() {
+        ProductService productService = INSTANCE;
+        if (productService == null) {
+            synchronized (ProductServiceImpl.class) {
+                productService = INSTANCE;
+                if (productService == null) {
+                    INSTANCE = productService = new ProductServiceImpl();
+                }
+            }
+        }
+
+        return productService;
+    }
+    @Override
+    public List<Product> getAll() {
+        try {
+            startTransaction();
+            List<Product> list = productDao.getAll();
+            commit();
+            return list;
+        } catch (SQLException e) {
+            rollback();
+            throw new ServiceException("Error getting Products");
+        }
+    }
 
     @Override
     public Product save(Product product) {

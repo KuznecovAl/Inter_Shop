@@ -35,7 +35,7 @@ public class OrderDaoImpl extends AbstractDao implements OrderDao {
     public Order save(Order order) throws SQLException {
         psSave = prepareStatement(saveQuery, Statement.RETURN_GENERATED_KEYS);
         psSave.setLong(1, order.getId_user());
-        psSave.setLong(2, order.getQuantity());
+        psSave.setLong(2, order.getId_user());
         psSave.executeUpdate();
         ResultSet rs = psSave.getGeneratedKeys();
         if (rs.next()) {
@@ -61,7 +61,7 @@ public class OrderDaoImpl extends AbstractDao implements OrderDao {
     public void update(Order order) throws SQLException {
         psUpdate = prepareStatement(updateQuery);
         psUpdate.setLong(1, order.getId());
-        psUpdate.setLong(2, order.getQuantity());
+        psUpdate.setLong(2, order.getId_user());
         psUpdate.executeUpdate();
     }
     @Override

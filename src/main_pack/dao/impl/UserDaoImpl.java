@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,14 +19,16 @@ public class UserDaoImpl extends AbstractDao implements UserDao{
     private static final String saveNewUserQuery="INSERT INTO USERS (LOGIN, PASSWORD, E_MAIL) VALUES (?, ?, ?)";
     private static final String saveUserQuery = "INSERT INTO USERS (LOGIN, PASSWORD, PRIVILEGE, NAME, LNAME, E_MAIL, PHONE," +
             " ADDRESS_CITY, ADDRESS_STREET, ADDRESS_HOUSE, ADDRESS_FLAT, ADDRESS_INDEX," +
-            "LANG, STATUS) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "LANG, STATUS, BIRTHDATE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String updateUserQuery = "UPDATE USERS SET LOGIN=?, PASSWORD=?, PRIVILEGE=?, NAME=?, LNAME=?, E_MAIL=?," +
             "PHONE=?, ADDRESS_CITY=?, ADDRESS_STREET=?, ADDRESS_HOUSE=?, ADDRESS_FLAT=?, ADDRESS_INDEX=?," +
-            "LANG=?, STATUS=? WHERE USER_ID=?";
+            "LANG=?, STATUS=?, BIRTHDATE=? WHERE USER_ID=?";
     private static final String getUserQuery = "SELECT * FROM USERS WHERE USER_ID=?";
     private static final String getAllUserQuery = "SELECT * FROM USERS";
     private static final String deleteUserQuery = "DELETE FROM USERS WHERE USER_ID=?";
+    private static final String getUserByLoginQuery = "SELECT * FROM USERS WHERE LOGIN=?";
 
+    private PreparedStatement psGetByLogin;
     private PreparedStatement psSave;
     private PreparedStatement psSaveNew;
     private PreparedStatement psUpdate;
@@ -48,6 +51,19 @@ public class UserDaoImpl extends AbstractDao implements UserDao{
             }
         }
         return userDao;
+    }
+
+    @Override
+    public User getByLogin(String login) throws SQLException {
+        psGetByLogin = prepareStatement(getUserByLoginQuery);
+        psGetByLogin.setString(1, login);
+        ResultSet rs = psGetByLogin.executeQuery();
+        if (rs.next()) {
+            return populateEntity(rs);
+        }
+        close(rs);
+
+        return null;
     }
     @Override
     public List<User> getAll() throws SQLException {
@@ -125,24 +141,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao{
         psGet.executeQuery();
         ResultSet rs = psGet.getResultSet();
         if (rs.next()) {
-            User user = new User();
-            user.setId(rs.getLong(1));
-            user.setLogin(rs.getString(2));
-            user.setPassword(rs.getString(3));
-            user.setPrivilege(rs.getInt(4));
-            user.setName(rs.getString(5));
-            user.setLast_name(rs.getString(6));
-            user.setEmail(rs.getString(7));
-            user.setPhone(rs.getString(8));
-            user.setAddress_city(rs.getString(9));
-            user.setAddress_street(rs.getString(10));
-            user.setAddress_building(rs.getString(11));
-            user.setAddress_flat(rs.getString(12));
-            user.setAddress_index(rs.getString(13));
-            user.setLang(rs.getString(14));
-            user.setStatus(rs.getString(15));
-
-            return user;
+            return populateEntity(rs);
         }
         close(rs);
 
@@ -151,7 +150,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao{
     @Override
     public void update(User user) throws SQLException {
         psUpdate = prepareStatement(updateUserQuery);
-        psUpdate.setLong(15, user.getId());
+        psUpdate.setLong(16, user.getId());
         psUpdate.setString(1, user.getLogin());
         psUpdate.setString(2, user.getPassword());
         psUpdate.setInt(3, user.getPrivilege());
@@ -166,6 +165,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao{
         psUpdate.setString(12, user.getAddress_index());
         psUpdate.setString(13, user.getLang());
         psUpdate.setString(14, user.getStatus());
+        psUpdate.setString(14, user.getBirthday().toString());
         psUpdate.executeUpdate();
     }
     @Override
@@ -175,5 +175,25 @@ public class UserDaoImpl extends AbstractDao implements UserDao{
         return psDelete.executeUpdate();
     }
 
+    private User populateEntity(ResultSet rs) throws SQLException {
+        User user = new User();
+        user.setId(rs.getLong(1));
+        user.setLogin(rs.getString(2));
+        user.setPassword(rs.getString(3));
+        user.setPrivilege(rs.getInt(4));
+        user.setName(rs.getString(5));
+        user.setLast_name(rs.getString(6));
+        user.setEmail(rs.getString(7));
+        user.setPhone(rs.getString(8));
+        user.setAddress_city(rs.getString(9));
+        user.setAddress_street(rs.getString(10));
+        user.setAddress_building(rs.getString(11));
+        user.setAddress_flat(rs.getString(12));
+        user.setAddress_index(rs.getString(13));
+        user.setLang(rs.getString(14));
+        user.setStatus(rs.getString(15));
+        user.setBirthday(LocalDate.parse(rs.getString(16)));
+        return user;
+    }
 
 }

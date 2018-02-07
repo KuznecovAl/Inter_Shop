@@ -3,6 +3,8 @@ package main_pack.entities;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 
 @Data
 @NoArgsConstructor
@@ -23,11 +25,12 @@ public class User {
     private String address_index;
     private String lang;
     private String status;
+    private LocalDate birthday;
 
 
     public User(String login, String password, String name, String last_name, int privilege,
                 String email, String phone, String address_city, String address_street, String address_building,
-                String address_flat, String address_index, String lang, String status) {
+                String address_flat, String address_index, String lang, String status, LocalDate birthday) {
         this.login = login;
         this.password = password;
         this.name = name;
@@ -42,6 +45,7 @@ public class User {
         this.address_index = address_index;
         this.lang = lang;
         this.status = status;
+        this.birthday = birthday;
     }
 
     public User(String login, String password, String email) {

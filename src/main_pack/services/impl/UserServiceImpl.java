@@ -10,11 +10,24 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
 
-/**
- * Created by yslabko on 07/03/2017.
- */
 public class UserServiceImpl extends AbstractService implements UserService {
+    private static volatile UserService INSTANCE = null;
     private UserDao userDao = UserDaoImpl.getInstance();
+
+    public static UserService getInstance() {
+        UserService userService = INSTANCE;
+        if (userService == null) {
+            synchronized (UserServiceImpl.class) {
+                userService = INSTANCE;
+                if (userService == null) {
+                    INSTANCE = userService = new UserServiceImpl();
+                }
+            }
+        }
+
+        return userService;
+    }
+
 
     @Override
     public User save(User user) {
@@ -48,6 +61,16 @@ public class UserServiceImpl extends AbstractService implements UserService {
     public int delete(Serializable id) {
         return 0;
     }
+
+    @Override
+    public User getByLogin(String login) {
+        try {
+            return userDao.getByLogin(login);
+        } catch (SQLException e) {
+            throw new ServiceException("Error getting User by login" + login);
+        }
+    }
+
 
 //    @Override
 //    public List<User> getByOrderId(long orderId) {

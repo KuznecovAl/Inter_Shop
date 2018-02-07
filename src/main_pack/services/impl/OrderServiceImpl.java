@@ -35,10 +35,9 @@ public class OrderServiceImpl extends AbstractService implements OrderService {
             if (quantity < 1) {
                 quantity = 1;
             }
-            order.setQuantity(quantity);
             order = orderDao.save(order);
 
-            Item item = new Item(order.getId(), productId, quantity);
+            Item item = new Item(order.getId(), productId, quantity, 0);
             itemDao.save(item);
             commit();
             return order;
@@ -84,11 +83,10 @@ public class OrderServiceImpl extends AbstractService implements OrderService {
                 List<Item> items = itemDao.getByOrderId(order.getId());
                 double sum = 0;
                 for (Item item : items) {
-                    Product product = productDao.get(item.getProductId());
+                    Product product = productDao.get(item.getId_product());
                     sum += product.getPrice() * item.getQuantity();
                 }
                 commit();
-                order.setTotal(sum);
             }
             return orders;
         } catch (SQLException e) {

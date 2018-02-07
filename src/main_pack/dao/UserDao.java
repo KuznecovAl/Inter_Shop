@@ -9,5 +9,5 @@ public interface UserDao extends DAO<User>{
 
     User saveNew(User user) throws SQLException;
     List<User> getAll() throws SQLException;
-
+    User getByLogin(String login) throws SQLException;
 }

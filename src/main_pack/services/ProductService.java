@@ -3,12 +3,9 @@ package main_pack.services;
 import main_pack.entities.Product;
 
 import java.io.Serializable;
+import java.util.List;
 
-/**
- * Class ItemService
- *
- * Created by yslabko on 07/02/2017.
- */
+
 public interface ProductService {
 
     Product save(Product product);
@@ -18,6 +15,7 @@ public interface ProductService {
     void update(Product product);
 
     int delete(Serializable id);
+    List<Product> getAll();
 
 
 }
