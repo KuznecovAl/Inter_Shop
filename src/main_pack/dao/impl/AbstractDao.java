@@ -7,12 +7,6 @@ import org.apache.log4j.*;
 
 import main_pack.utils.ConnectionManager;
 
-/**
- * Class AbstractDao
- *
- * Created by yslabko on 08/08/2017.
- */
-
 public abstract class AbstractDao {
     Logger lg=Logger.getLogger("loger");
 

@@ -1,6 +1,6 @@
 package web.servlet;
 
-import web.command.enums.CommandType;
+import web.command.enums.ControllerType;
 import web.handlers.RequestHandler;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 public class FrontController extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        CommandType commandType = RequestHandler.getCommand(req);
+        ControllerType commandType = RequestHandler.getCommand(req);
         commandType.getController().execute(req, resp);
     }
 }

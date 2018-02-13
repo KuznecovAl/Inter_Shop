@@ -29,6 +29,16 @@ public class ProductServiceImpl extends AbstractService implements ProductServic
 
         return productService;
     }
+
+    @Override
+    public Product getByModelAndSupplier(String model, String supplier) {
+        try {
+            return productDao.getByModelAndSupplier(model, supplier);
+        } catch (SQLException e) {
+            throw new ServiceException("Error getting by Supplier:" + supplier + " and Model:" + model);
+        }
+    }
+
     @Override
     public List<Product> getAll() {
         try {

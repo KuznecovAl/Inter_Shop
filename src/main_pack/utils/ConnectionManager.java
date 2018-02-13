@@ -2,11 +2,7 @@ package main_pack.utils;
 
 import java.sql.Connection;
 
-/**
- * Class ConnectionManager
- *
- * Created by yslabko on 07/01/2017.
- */
+
 public class ConnectionManager {
     private static ThreadLocal<Connection> tl = new ThreadLocal<>();
 

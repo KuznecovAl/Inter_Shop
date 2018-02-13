@@ -8,22 +8,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Class OrderDaoImpl
- *
- * Created by yslabko on 08/09/2017.
- */
+
 public class OrderDaoImpl extends AbstractDao implements OrderDao {
     private static volatile OrderDao INSTANCE = null;
 
-    private static final String saveQuery = "INSERT INTO `ORDER` (USER_ID, TOTAL, DATE) VALUES (?, ?, now())";
-    private static final String updateQuery = "UPDATE `ORDER` SET TOTAL=? WHERE ID=?";
-    private static final String getQuery = "SELECT ID, USER_ID FROM `ORDER` WHERE ID=?";
-    private static final String getAllByUserQuery = "SELECT ID, USER_ID FROM `ORDER` WHERE USER_ID = ? ORDER BY ID DESC";
-    private static final String deleteQuery = "DELETE FROM `ORDER` WHERE ID=?";
+    private static final String saveQuery = "INSERT INTO `ORDERS` (USER_ID, TOTAL, DATE) VALUES (?, ?, now())";
+    private static final String updateQuery = "UPDATE `ORDERS` SET TOTAL=? WHERE ID=?";
+    private static final String getQuery = "SELECT ID, USER_ID FROM `ORDERS` WHERE ID=?";
+    private static final String getAllByUserQuery = "SELECT * FROM `ORDERS` WHERE ID_USER = ? ORDER BY ORDER_ID DESC";
+    private static final String deleteQuery = "DELETE FROM `ORDERS` WHERE ID=?";
 
     private PreparedStatement psSave;
     private PreparedStatement psUpdate;
@@ -88,6 +87,8 @@ public class OrderDaoImpl extends AbstractDao implements OrderDao {
         Order entity = new Order();
             entity.setId(rs.getLong(1));
             entity.setId_user(rs.getLong(2));
+            entity.setDate_time(LocalDateTime.parse(rs.getString(3),DateTimeFormatter.ofPattern("y-M-d H:m:s.S")));
+            entity.setStatus(rs.getString(4));
         return entity;
     }
     public static OrderDao getInstance() {

@@ -11,6 +11,7 @@
       <root url="jar://$PROJECT_DIR$/libs/mchange-commons-java-0.2.11.jar!/" />
       <root url="jar://$PROJECT_DIR$/libs/c3p0-0.9.5.2.jar!/" />
       <root url="jar://$PROJECT_DIR$/libs/jstl-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/gson-2.2.2.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

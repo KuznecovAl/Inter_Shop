@@ -1,75 +1,39 @@
-$(document).ready(function(){
-    $('#addPerson').click(function () {
-        addPerson();
+$(document).ready(function () {
+    $('.addProductBtn').click(function () {
+        addProduct($(this));
     });
-    $('#deletePerson').click(function () {
-        deletePerson();
-    });
-    $('#productAdd').click(function () {
-        addProduct();
-    });
-    $('#productUpdate').click(function () {
-        updateProduct();
-    });
-    $('#productDelete').click(function () {
-        deleteProduct();
+    $('.reduceProductBtn').click(function () {
+        reduceProduct($(this));
     });
 });
 
-
-function addPerson() {
-    $('#personForm').prop('action', 'add.form');
-    $('#personButton').prop('value', 'Add person');
-    $('#personForm').show();
-}
-
-function deletePerson() {
-    $('#personForm').prop('action', 'delete.form');
-    $('#personButton').prop('value', 'Delete person');
-    $('#personForm').show();
-}
-
-function addProduct() {
-    var name = $("#name").val();
-    var model = $("#model").val();
-    var price = $("#price").val();
-    if (name && model && price) {
-        var product = {
-            name: name,
-            model: model,
-            price: price
-        };
-        $.ajax({
-            headers:"Accept: application/json",
-            data:product,
-            dataType: "json",
-            type:'post',
-            url: restUrl
-        }).done(function(data) {
-            var el = '<div id="' + data.id + '">'+ data.name +'    '+data.model+'    '+data.price+'</div>';
-            $(".productTable").append(el);
-        }).fail(function(data){
-            if ( console && console.log ) {
-                console.log( "Error data:", data);
-            }
-        });
-    }
-}
-
-function deleteProduct() {
-    var id = $("#id").val();
-    var url = restUrl+ "/" + id;
-
+function addProduct(element) {
+    var productId = $(element).attr('id');
+    var json = JSON.stringify(productId);
+    console.log(json);
     $.ajax({
-        headers:"Accept: application/json",
-        type:'delete',
-        url: url
-    }).done(function(data) {
-        $("#"+id).remove();
-    }).fail(function(data){
-        if ( console && console.log ) {
-            console.log( "Error data:", data);
+        type: 'get',
+        url: contextUrl + '/frontController?command=addProduct&productId=' + productId
+    }).done(function (data) {
+        $('#count'+productId).text(data);
+    }).fail(function (data) {
+        if (console && console.log) {
+            console.log("Error data:", data);
         }
     });
 }
 
+function reduceProduct(element) {
+    var productId = $(element).attr('id');
+    $.ajax({
+        type: 'post',
+        url: contextUrl + '/frontController?command=reduceProduct&productId='+ productId
+        // data:{command:'reduceProduct', id:productId}
+    }).done(function (data) {
+        $('#count'+productId).text(data);
+    }).fail(function (data) {
+        if (console && console.log) {
+            console.log("Error data:", data);
+        }
+    });
+}

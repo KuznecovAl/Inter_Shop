@@ -15,7 +15,7 @@ public class User {
     private String password;
     private String name;
     private String last_name;
-    private int privilege;
+    private String privilege;
     private String email;
     private String phone;
     private String address_city;
@@ -28,7 +28,7 @@ public class User {
     private LocalDate birthday;
 
 
-    public User(String login, String password, String name, String last_name, int privilege,
+    public User(String login, String password, String name, String last_name, String privilege,
                 String email, String phone, String address_city, String address_street, String address_building,
                 String address_flat, String address_index, String lang, String status, LocalDate birthday) {
         this.login = login;

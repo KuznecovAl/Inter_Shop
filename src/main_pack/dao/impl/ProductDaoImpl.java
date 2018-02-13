@@ -22,15 +22,43 @@ public class ProductDaoImpl extends AbstractDao implements ProductDao {
     private static final String getProductQuery = "SELECT * FROM PRODUCTS WHERE PRODUCT_ID=?";
     private static final String getAllProductsQuery = "SELECT * FROM PRODUCTS";
     private static final String deleteProductQuery = "DELETE FROM PRODUCTS WHERE PRODUCT_ID=?";
+    private static final String getByModelAndSupplierQuery = "SELECT * FROM PRODUCT WHERE MODEL=? AND SUPPLIER=?";
+
 
     private PreparedStatement psSave;
     private PreparedStatement psUpdate;
     private PreparedStatement psGet;
     private PreparedStatement psGetAll;
     private PreparedStatement psDelete;
-
+    private PreparedStatement psGetByModelAndSupplier;
 
     private ProductDaoImpl() {
+    }
+
+
+    @Override
+    public Product getByModelAndSupplier(String model, String supplier) throws SQLException {
+        psGetByModelAndSupplier = prepareStatement(getByModelAndSupplierQuery);
+        psGetByModelAndSupplier.setString(1, model);
+        psGetByModelAndSupplier.setString(2, supplier);
+        psGetByModelAndSupplier.execute();
+        ResultSet rs = psGetByModelAndSupplier.getResultSet();
+        while (rs.next()) {
+            Product product = new Product();
+            product.setId(rs.getLong(1));
+            product.setCategory(rs.getString(2));
+            product.setName(rs.getString(3));
+            product.setSupplier(rs.getString(4));
+            product.setModel(rs.getString(5));
+            product.setPics(rs.getString(6));
+            product.setAttributes(rs.getString(7));
+            product.setDescription(rs.getString(8));
+            product.setQuantity(rs.getInt(9));
+            product.setPrice(rs.getFloat(10));
+        }
+        close(rs);
+
+        return null;
     }
 
     public static ProductDao getInstance() {

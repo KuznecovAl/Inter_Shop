@@ -13,8 +13,8 @@
         <tr>
             <td>${status.index + 1}</td>
             <td>${order.id}</td>
-            <td>${order.userId}</td>
-            <td>${order.total}</td>
+           <%-- <td>${order.userId}</td>--%>
+           <%-- <td>${order.total}</td>--%>
         </tr>
     </c:forEach>
 </TABLE>

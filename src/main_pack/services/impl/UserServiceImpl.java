@@ -40,6 +40,16 @@ public class UserServiceImpl extends AbstractService implements UserService {
     }
 
     @Override
+    public User saveNew(User user) {
+        try {
+            user = userDao.saveNew(user);
+        } catch (SQLException e) {
+            throw new ServiceException("Error creating Item" + user);
+        }
+        return user;
+    }
+
+    @Override
     public User get(Serializable id) {
         try {
             return userDao.get(id);

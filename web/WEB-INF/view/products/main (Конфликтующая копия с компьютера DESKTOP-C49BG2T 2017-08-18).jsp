@@ -23,14 +23,14 @@
                 }
             </script>
             <c:forEach var="product" items="${products}" varStatus="status">
-                <tr class="info">
+                <tr class="">
                     <td class="col-md-4">${product.supplier}</td>
                     <div class="col-md-8">
                         <td class="col-md-4">${product.model}</td>
                         <td id="count${product.id}" class="col-md-1">0</td>
                         <td class="col-md-1">${product.price}</td>
                         <td class="col-md-1"><input id="${product.id}" class="btn-primary addProductBtn" type="button" title="Добавить в корзину" value="+"/></td>
-                        <td class="col-md-1"><input id="${product.id}" class="btn-primary reduceProductBtn" type="button" title="Удалить 1 из корзину" value="-"/></td>
+                        <td class="col-md-1"></td>
                     </div>
                 </tr>
             </c:forEach>

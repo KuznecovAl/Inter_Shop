@@ -25,7 +25,7 @@ public class RandomUserGenerator {
 
         long tB = System.currentTimeMillis();
         for (int i = 0; i < 1000; i++) {
-            User newUser = userDao.save(new User(s(), s(), s(), s(), (int) Math.random() * 5, s(), s(), s(), s(), s(), s(), s(), "ruRU", s(), LocalDate.parse(s())));
+            User newUser = userDao.save(new User(s(), s(), s(), s(), s() , s(), s(), s(), s(), s(), s(), s(), "ruRU", s(), LocalDate.parse(s())));
         }
         long tE = System.currentTimeMillis();
         System.out.println("Время заполненния базы: " + (tE - tB) + " мс");

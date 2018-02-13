@@ -16,6 +16,6 @@ public interface ProductService {
 
     int delete(Serializable id);
     List<Product> getAll();
-
+    Product getByModelAndSupplier(String model, String supplier);
 
 }

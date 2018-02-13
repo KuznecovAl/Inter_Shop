@@ -11,19 +11,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Class ItemDaoImpl
- *
- * Created by yslabko on 07/02/2017.
- */
 public class ItemDaoImpl extends AbstractDao implements ItemDao {
     private static volatile ItemDao INSTANCE = null;
 
-    private static final String saveItemQuery = "INSERT INTO ITEM (ORDER_ID, PRODUCT_ID, QUANTITY, DISCOUNT) VALUES (?, ?, ?, ?)";
-    private static final String updateItemQuery = "UPDATE ITEM SET QUANTITY=?, DISCOUNT=? WHERE ITEM_ID=?";
-    private static final String getItemQuery = "SELECT * FROM ITEM WHERE ITEM_ID=?";
-    private static final String getItemsByOrderQuery = "SELECT * FROM ITEM WHERE ORDER_ID = ?";
-    private static final String deleteItemQuery = "DELETE FROM ITEM WHERE ITEM_ID=?";
+    private static final String saveItemQuery = "INSERT INTO ITEMS (ORDER_ID, PRODUCT_ID, QUANTITY, DISCOUNT) VALUES (?, ?, ?, ?)";
+    private static final String updateItemQuery = "UPDATE ITEMS SET QUANTITY=?, DISCOUNT=? WHERE ITEM_ID=?";
+    private static final String getItemQuery = "SELECT * FROM ITEMS WHERE ITEM_ID=?";
+    private static final String getItemsByOrderQuery = "SELECT * FROM ITEMS WHERE ID_ORDERS = ?";
+    private static final String deleteItemQuery = "DELETE FROM ITEMS WHERE ITEM_ID=?";
 
     private PreparedStatement psSave;
     private PreparedStatement psUpdate;

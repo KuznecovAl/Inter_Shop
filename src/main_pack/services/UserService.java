@@ -9,6 +9,7 @@ import java.util.List;
 public interface UserService {
 
     User save(User user);
+    User saveNew(User user);
     User get(Serializable id);
     void update(User user);
     int delete(Serializable id);

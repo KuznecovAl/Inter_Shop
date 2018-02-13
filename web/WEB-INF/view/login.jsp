@@ -6,4 +6,7 @@
         <b>Password</b><input type="password" name="password" maxlength="20"/><br/>
         <input type="submit" value="Войти">
     </form>
+    <form action="frontController?command=registration" method="post">
+        <input type="submit" value="Зарегистрироваться">
+    </form>
 </div>

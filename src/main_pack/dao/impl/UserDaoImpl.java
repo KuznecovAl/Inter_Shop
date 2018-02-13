@@ -16,7 +16,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao{
 
     private static volatile UserDao INSTANCE = null;
 
-    private static final String saveNewUserQuery="INSERT INTO USERS (LOGIN, PASSWORD, E_MAIL) VALUES (?, ?, ?)";
+    private static final String saveNewUserQuery="INSERT INTO USERS (LOGIN, PASSWORD, E_MAIL, PRIVILEGE, STATUS) VALUES (?, ?, ?,?,?)";
     private static final String saveUserQuery = "INSERT INTO USERS (LOGIN, PASSWORD, PRIVILEGE, NAME, LNAME, E_MAIL, PHONE," +
             " ADDRESS_CITY, ADDRESS_STREET, ADDRESS_HOUSE, ADDRESS_FLAT, ADDRESS_INDEX," +
             "LANG, STATUS, BIRTHDATE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -77,7 +77,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao{
             user.setId(rs.getLong(1));
             user.setLogin(rs.getString(2));
             user.setPassword(rs.getString(3));
-            user.setPrivilege(rs.getInt(4));
+            user.setPrivilege(rs.getString(4));
             user.setName(rs.getString(5));
             user.setLast_name(rs.getString(6));
             user.setEmail(rs.getString(7));
@@ -100,6 +100,8 @@ public class UserDaoImpl extends AbstractDao implements UserDao{
         psSaveNew.setString(1, user.getLogin());
         psSaveNew.setString(2, user.getPassword());
         psSaveNew.setString(3, user.getEmail());
+        psSaveNew.setString(4, user.getPrivilege());
+        psSaveNew.setString(5, user.getStatus());
         psSaveNew.executeUpdate();
         ResultSet rs = psSaveNew.getGeneratedKeys();
         if (rs.next()) {
@@ -113,7 +115,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao{
         psSave = prepareStatement(saveUserQuery, Statement.RETURN_GENERATED_KEYS);
         psSave.setString(1, user.getLogin());
         psSave.setString(2, user.getPassword());
-        psSave.setInt(3, user.getPrivilege());
+        psSave.setString(3, user.getPrivilege());
         psSave.setString(4, user.getName());
         psSave.setString(5, user.getLast_name());
         psSave.setString(6, user.getEmail());
@@ -153,7 +155,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao{
         psUpdate.setLong(16, user.getId());
         psUpdate.setString(1, user.getLogin());
         psUpdate.setString(2, user.getPassword());
-        psUpdate.setInt(3, user.getPrivilege());
+        psUpdate.setString(3, user.getPrivilege());
         psUpdate.setString(4, user.getName());
         psUpdate.setString(5, user.getLast_name());
         psUpdate.setString(6, user.getEmail());
@@ -165,7 +167,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao{
         psUpdate.setString(12, user.getAddress_index());
         psUpdate.setString(13, user.getLang());
         psUpdate.setString(14, user.getStatus());
-        psUpdate.setString(14, user.getBirthday().toString());
+        psUpdate.setString(15, user.getBirthday().toString());
         psUpdate.executeUpdate();
     }
     @Override
@@ -180,7 +182,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao{
         user.setId(rs.getLong(1));
         user.setLogin(rs.getString(2));
         user.setPassword(rs.getString(3));
-        user.setPrivilege(rs.getInt(4));
+        user.setPrivilege(rs.getString(4));
         user.setName(rs.getString(5));
         user.setLast_name(rs.getString(6));
         user.setEmail(rs.getString(7));

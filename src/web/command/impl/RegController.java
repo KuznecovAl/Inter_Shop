@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class LoginController implements Controller {
+public class RegController implements Controller {
 
     UserService userService = UserServiceImpl.getInstance();
 
@@ -20,25 +20,39 @@ public class LoginController implements Controller {
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
-        if (login==null || password==null) {
-            resp.setHeader("errorMsg", "Invalid Login or Password");
+        String email = req.getParameter("e_mail");
+
+        if (login == null || password == null || email == null
+                || login.contains(" ") || password.contains(" ") || email.contains(" ") ||
+                login.equals("") || password.equals("") || email.equals("")) {
+            req.setAttribute("errorMsg", "You input wrong data");
             RequestDispatcher dispatcher = req.getRequestDispatcher(MAIN_PAGE);
+            req.setAttribute("title", "Reg form");
             dispatcher.forward(req, resp);
             return;
         }
-        User user = userService.getByLogin(login);
-        if (user != null && user.getPassword().equals(Encoder.encode(password))) {
-//        if (user != null && password.equals(user.getPassword())) {
+        if (userService.getByLogin(login) == null) {
+            User user = new User();
+            user.setEmail(email);
+            user.setLogin(login);
+            user.setPassword(Encoder.encode(password));
+            user.setPrivilege("3");
+            user.setStatus("new");
+            userService.saveNew(user);
             req.getSession().setAttribute("user", user);
             String contextPath = req.getContextPath();
-            resp.sendRedirect(contextPath+ "/frontController?command=orders");
+            resp.sendRedirect(contextPath + "/frontController?command=orders");
             return;
         } else {
-            req.setAttribute("errorMsg", "Invalid Login or Password");
+            req.setAttribute("errorMsg", "login is busy");
             RequestDispatcher dispatcher = req.getRequestDispatcher(MAIN_PAGE);
-            req.setAttribute("title", "Login form");
+            req.setAttribute("title", "Reg form");
             dispatcher.forward(req, resp);
+
+
             return;
         }
+
+
     }
 }

@@ -1,6 +1,6 @@
 package web.filters;
 
-import web.command.enums.CommandType;
+import web.command.enums.ControllerType;
 import web.handlers.RequestHandler;
 
 import java.io.IOException;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import static web.command.enums.CommandType.ORDERS;
+import static web.command.enums.ControllerType.ORDERS;
 
 @WebFilter(urlPatterns = {"/frontController"})
 public class AuthFilter implements Filter {
@@ -30,7 +30,7 @@ public class AuthFilter implements Filter {
             FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-        CommandType type = RequestHandler.getCommand(req);
+        ControllerType type = RequestHandler.getCommand(req);
         if (ORDERS.equals(type)) {
             String contextPath = req.getContextPath();
             HttpSession session = req.getSession();

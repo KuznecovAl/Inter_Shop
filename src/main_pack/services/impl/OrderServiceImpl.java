@@ -14,6 +14,7 @@ import main_pack.services.ServiceException;
 
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -29,21 +30,22 @@ public class OrderServiceImpl extends AbstractService implements OrderService {
         Order order = new Order();
         try {
             startTransaction();
-            order.setId_user(userId);
 
-            Product product = productDao.get(productId);
             if (quantity < 1) {
                 quantity = 1;
             }
+            order.setId_user(userId);
+            order.setDate_time(LocalDateTime.now());
+            order.setStatus("open");
             order = orderDao.save(order);
-
+ //           Product product = productDao.get(productId);
             Item item = new Item(order.getId(), productId, quantity, 0);
             itemDao.save(item);
             commit();
             return order;
         } catch (SQLException e) {
             rollback();
-            throw new ServiceException("Error creating Order "+order);
+            throw new ServiceException("Error creating Order " + order);
         }
     }
 
